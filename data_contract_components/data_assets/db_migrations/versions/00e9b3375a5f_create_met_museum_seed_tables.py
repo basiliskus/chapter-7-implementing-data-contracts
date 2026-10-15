@@ -1,21 +1,22 @@
 """create met museum seed tables
 
 Revision ID: 00e9b3375a5f
-Revises:
+Revises: 
 Create Date: 2025-08-06 04:03:44.279544+00:00
 
 """
-from collections.abc import Sequence
+from typing import Sequence, Union
 
-import sqlalchemy as sa
 from alembic import op
+import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import ARRAY, JSON
+
 
 # revision identifiers, used by Alembic.
 revision: str = '00e9b3375a5f'
-down_revision: str | Sequence[str] | None = None
-branch_labels: str | Sequence[str] | None = None
-depends_on: str | Sequence[str] | None = None
+down_revision: Union[str, Sequence[str], None] = None
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
 
 column_comment_dict: dict[str, str] = {
     "object_id": (
@@ -249,14 +250,14 @@ def upgrade() -> None:
             comment=column_comment_dict["object_id"]
         ),
         sa.Column(
-            "image",
+            "primary_image",
             sa.Text,
             comment=column_comment_dict["primary_image"]
         ),
         sa.Column(
-            "is_primary_image",
-            sa.Boolean,
-            comment="Identifies if its the primary image for the object."
+            "additional_images",
+            ARRAY(sa.Text),
+            comment=column_comment_dict["additional_images"]
         ),
         sa.Column(
             "created_at",
